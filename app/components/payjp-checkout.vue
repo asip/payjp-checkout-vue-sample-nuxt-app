@@ -17,6 +17,18 @@
     // type: string
   }
 
+  interface DataProperties {
+    key: string,
+    partial?: string,
+    text?: string,
+    submitText?: string,
+    tokenName?: string,
+    previousToken?: string,
+    lang?: string,
+    namePlaceholder?: string,
+    tenant?: string,
+  }
+
   declare global {
     interface Window {
       payjpCheckoutOnCreated: ((response: PayjpCheckoutResponse) => void) | null
@@ -30,15 +42,7 @@
   import { onMounted, onBeforeUnmount, useId } from 'vue'
 
   interface PayjpCheckoutProps {
-    dataKey: string,
-    dataPartial?: string,
-    dataText?: string,
-    dataSubmitText?: string,
-    dataTokenName?: string,
-    dataPreviousToken?: string,
-    dataLang?: string,
-    dataNamePlaceholder?: string,
-    dataTenant?: string,
+    data: DataProperties,
     onCreatedHandler: (payload: PayjpCheckoutPayload) => void,
     onFailedHandler: (payload: PayjpCheckoutErrorPayload) => void
   }
@@ -71,18 +75,18 @@
 
     script = document.createElement('script')
     script.src = 'https://checkout.pay.jp/'
-    script.dataset['onCreated'] = 'payjpCheckoutOnCreated'
-    script.dataset['onFailed'] = 'payjpCheckoutOnFailed'
-    script.dataset['key'] = props.dataKey
-    script.dataset['partial'] = props.dataPartial || 'false'
-    if (props.dataText) script.dataset['text'] = props.dataText
-    if (props.dataSubmitText) script.dataset['submitText'] = props.dataSubmitText
-    if (props.dataTokenName) script.dataset['tokenName'] = props.dataTokenName
-    if (props.dataPreviousToken) script.dataset['previousToken'] = props.dataPreviousToken
-    if (props.dataLang) script.dataset['lang'] = props.dataLang
-    if (props.dataNamePlaceholder) script.dataset['namePlaceholder'] = props.dataNamePlaceholder
-    if (props.dataTenant) script.dataset['tenant'] = props.dataTenant
     script.classList.add('payjp-button')
+    script.dataset.onCreated = 'payjpCheckoutOnCreated'
+    script.dataset.onFailed = 'payjpCheckoutOnFailed'
+    script.dataset.key = props.data.key
+    script.dataset.partial = props.data.partial ?? 'false'
+    if (props.data.text) script.dataset.text = props.data.text
+    if (props.data.submitText) script.dataset.submitText = props.data.submitText
+    if (props.data.tokenName) script.dataset.tokenName = props.data.tokenName
+    if (props.data.previousToken) script.dataset.previousToken = props.data.previousToken
+    if (props.data.lang) script.dataset.lang = props.data.lang
+    if (props.data.namePlaceholder) script.dataset.namePlaceholder = props.data.namePlaceholder
+    if (props.data.tenant) script.dataset.tenant = props.data.tenant
 
     element = document.querySelector(`#${payjpCheckoutId}`)
     element?.appendChild(script)

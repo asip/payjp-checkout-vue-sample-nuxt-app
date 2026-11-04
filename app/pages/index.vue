@@ -3,7 +3,7 @@ import type { PayjpCheckoutErrorPayload, PayjpCheckoutPayload } from '~/types'
 
 const runtimeConfig = useRuntimeConfig()
 
-const dataKey = runtimeConfig.public.payjpDataKey
+const data = {key: runtimeConfig.public.payjpDataKey, partial: 'true' }
 
 const onCreated = (payload: PayjpCheckoutPayload) => {
   console.log(payload.token)
@@ -16,8 +16,7 @@ const onFailed = (payload: PayjpCheckoutErrorPayload) => {
 
 <template>
   <PayjpCheckout
-    :dataKey="dataKey"
-    dataPartial="true"
+    :data
     :onCreatedHandler="onCreated"
     :onFailedHandler="onFailed" />
 </template>
